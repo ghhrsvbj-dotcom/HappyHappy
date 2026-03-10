@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Me</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Premium dark gradient background with anime image */
+            background: linear-gradient(135deg, rgba(15, 32, 39, 0.8), rgba(32, 58, 67, 0.8), rgba(44, 83, 100, 0.8)), url('https://i.ibb.co.com/Gv9sNPHb/anime-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            transition: background-color 0.1s;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Glassmorphism premium button */
+        .interactive-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            /* Flex layout to align the animated individual letters */
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            padding: 24px 64px;
+            font-size: 2.5rem;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-transform: none;
+            position: relative;
+            overflow: hidden;
+            outline: none;
+            user-select: none;
+            /* Starts hidden but fades in immediately so it doesn't pop in */
+            opacity: 0;
+            animation: fadeInBtn 0.1s forwards, pulseGlow 2s ease-in-out infinite alternate;
+            animation-delay: 0.1s, 0.1s;
+        }
+
+        @keyframes fadeInBtn {
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Shine effect */
+        .interactive-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.7s;
+        }
+
+        /* Disabled hover transform until animation is done so it doesn't conflict */
+        .interactive-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.6);
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .interactive-btn:hover::before {
+            left: 150%;
+        }
+
+        .interactive-btn:active {
+            transform: translateY(2px) scale(0.95);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Drop from sky animation */
+        @keyframes dropFromSky {
+            0% {
+                opacity: 0;
+                transform: translateY(-800px) rotate(45deg) scale(0);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateY(30px) rotate(-10deg) scale(1.2);
+            }
+
+            80% {
+                transform: translateY(-10px) rotate(5deg) scale(0.95);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(0) scale(1);
+            }
+        }
+
+        @keyframes floatLetter {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-8px) scale(1.1);
+                color: #ffb6c1;
+                text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
+            }
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 20px rgba(255, 255, 255, 0.05);
+                border-color: rgba(255, 255, 255, 0.2);
+            }
+
+            100% {
+                box-shadow: 0 10px 40px 0 rgba(255, 105, 180, 0.6), inset 0 0 30px rgba(255, 105, 180, 0.4);
+                border-color: rgba(255, 105, 180, 0.8);
+            }
+        }
+
+        .letter {
+            display: inline-block;
+            opacity: 0;
+            /* Bounce/drop followed by continuous floating */
+            animation: dropFromSky 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
+                floatLetter 1.5s ease-in-out infinite alternate;
+            animation-delay: var(--delay), calc(var(--delay) + 0.8s);
+            transform-origin: center bottom;
+        }
+
+        /* Specific gap for the space between words */
+        .letter.space {
+            width: 15px;
+        }
+
+        /* Rapid Flashing Animation for full body */
+        @keyframes flash {
+            0% {
+                background: #ff0000;
+            }
+
+            10% {
+                background: #00ff00;
+            }
+
+            20% {
+                background: #0000ff;
+            }
+
+            30% {
+                background: #ffff00;
+            }
+
+            40% {
+                background: #ff00ff;
+            }
+
+            50% {
+                background: #00ffff;
+            }
+
+            60% {
+                background: #ffffff;
+            }
+
+            70% {
+                background: #ff0000;
+            }
+
+            80% {
+                background: #000000;
+            }
+
+            90% {
+                background: #ff00ff;
+            }
+
+            100% {
+                background: #ffff00;
+            }
+        }
+
+        .flashing {
+            animation: flash 0.05s infinite;
+            /* Very fast flashing */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Replaced text with animated dropping spanned letters -->
+        <button class="interactive-btn" id="clickBtn">
+            <span class="letter" style="--delay: 0.10s">Y</span>
+            <span class="letter" style="--delay: 0.15s">a</span>
+            <span class="letter" style="--delay: 0.20s">m</span>
+            <span class="letter" style="--delay: 0.25s">a</span>
+            <span class="letter" style="--delay: 0.30s">t</span>
+            <span class="letter" style="--delay: 0.35s">e</span>
+            <span class="letter space" style="--delay: 0.35s"></span>
+            <span class="letter" style="--delay: 0.40s">K</span>
+            <span class="letter" style="--delay: 0.45s">u</span>
+            <span class="letter" style="--delay: 0.50s">d</span>
+            <span class="letter" style="--delay: 0.55s">e</span>
+            <span class="letter" style="--delay: 0.60s">s</span>
+            <span class="letter" style="--delay: 0.65s">a</span>
+            <span class="letter" style="--delay: 0.70s">i</span>
+            <span class="letter" style="--delay: 0.75s">y</span>
+            <span class="letter" style="--delay: 0.80s">a</span>
+        </button>
+    </div>
+
+    <!-- The audio file -->
+    <audio id="raahAudio" src="https://www.myinstants.com/media/sounds/raaah.mp3"></audio>
+
+    <script>
+        const btn = document.getElementById('clickBtn');
+        const audio = document.getElementById('raahAudio');
+
+        btn.addEventListener('click', () => {
+            // Set volume to maximum
+            audio.volume = 1.0;
+
+            // Play the audio
+            audio.play().catch(error => {
+                console.error("Audio playback error. Ensure interacting with document first.", error);
+            });
+
+            // Start flashing effect
+            document.body.classList.add('flashing');
+        });
+
+        // Optional: stop flashing when the audio stops
+        audio.addEventListener('ended', () => {
+            document.body.classList.remove('flashing');
+        });
+    </script>
+</body>
+
+</html>
